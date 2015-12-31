@@ -10,28 +10,64 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnHabla"
         android:src="@android:drawable/ic_btn_speak_now"
+        android:layout_marginTop="34dp"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/btnLista"
-        android:layout_alignStart="@+id/btnLista"
-        android:layout_marginTop="81dp" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnLista"
         android:src="@android:drawable/ic_menu_sort_by_size"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/btnMap"
+        android:layout_alignRight="@+id/btnMap"
+        android:layout_alignEnd="@+id/btnMap"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnMap"
         android:src="@android:drawable/ic_menu_compass"
-        android:layout_below="@+id/btnLista"
-        android:layout_marginTop="92dp"
-        android:layout_alignRight="@+id/btnLista"
-        android:layout_alignEnd="@+id/btnLista"
-        android:layout_alignLeft="@+id/btnLista"
-        android:layout_alignStart="@+id/btnLista" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="52dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btnHabla"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/btnLista">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="124dp"
+            android:id="@+id/txvUltimaFrase"
+            android:layout_below="@+id/btnHabla"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/btnHabla"
+            android:layout_alignEnd="@+id/btnHabla"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:hint="Frase escuchada" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="112dp"
+            android:text="Sugerencia"
+            android:id="@+id/txvFraseSugerencia"
+            android:layout_gravity="left|bottom"
+            android:textColor="#8b42414a" />
+    </FrameLayout>
+
 </RelativeLayout>

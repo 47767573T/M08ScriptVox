@@ -10,19 +10,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Fragmento que contiene el menu de de opciones.
  */
 public class F_Main extends Fragment {
 
-    public static final int CODIGO_SOLICITUD_RECONOCIMIENTO = 1234;
+    public static final int CODIGO_SOLICITUD_RECONOCIMIENTO = 1;
 
     private ListView lvFrases;
     private ImageButton btHabla;
     private ImageButton btLista;
     private ImageButton btMap;
+
+    private TextView tvUltimaFrase;
+    private TextView tvSugerenciaFrase;
 
 
     public F_Main() {
@@ -36,6 +42,8 @@ public class F_Main extends Fragment {
         //PARA HABLA Y RECONOCIMIENTO
         //Determinamos el comportamiento del click en el boton de hablar
         btHabla = (ImageButton) rootView.findViewById(R.id.btnHabla);
+        tvUltimaFrase = (TextView) rootView.findViewById(R.id.txvUltimaFrase);
+        tvSugerenciaFrase = (TextView) rootView.findViewById(R.id.txvFraseSugerencia);
 
         btHabla.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,8 +59,9 @@ public class F_Main extends Fragment {
                 try {
                     //Aqui realiza la actividad de reconocimiento y recoge los datos
                     startActivityForResult(intent, CODIGO_SOLICITUD_RECONOCIMIENTO);
-                    //TODO: Aqui llamaremos a la base de datos para guardar resultado
-                    //txtText.setText("");
+                    tvUltimaFrase.setText("");
+                    tvSugerenciaFrase.setText("");
+
                 } catch (ActivityNotFoundException a) {
                     Toast t = Toast.makeText(getActivity().getApplicationContext(),
                             "error en el reconocimiento de voz de su aparato",
@@ -88,17 +97,26 @@ public class F_Main extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int codigoSolicitud, int codigoResultado, Intent data) {
-        super.onActivityResult(codigoSolicitud, codigoResultado, data);
+    public void onActivityResult(int codigoSolicitud, int resultCode, Intent intent) {
+        super.onActivityResult(codigoSolicitud, resultCode, intent);
 
         //Validamos si el codigo de solicitud es el mismo y si la voz captada no da error
-        if (codigoSolicitud == CODIGO_SOLICITUD_RECONOCIMIENTO){
+        switch (codigoSolicitud) {
+            case CODIGO_SOLICITUD_RECONOCIMIENTO: {
+                if (resultCode == A_Main.RESULT_OK && null != intent) {
 
-            //TODO: crear metodos para guardado de frases
-            String frase = data.getStringExtra(RecognizerIntent.EXTRA_RESULTS);
+                    ArrayList<String> frases = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    tvUltimaFrase.setText(frases.get(0));   //Aqui escribe el resultado en el textView indicado
+
+                    tvSugerenciaFrase.setText(frases.get(1));
+
+                    //TODO: implementar metodo de guardado en BBDD
+                }
+                break;
+            }
         }
-
     }
 
-
 }
+
+
