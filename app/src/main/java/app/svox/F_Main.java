@@ -33,7 +33,7 @@ public class F_Main extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_lay, container, false);
 
-        //HABLA Y RECONOCIMIENTO
+        //PARA HABLA Y RECONOCIMIENTO
         //Determinamos el comportamiento del click en el boton de hablar
         btHabla = (ImageButton) rootView.findViewById(R.id.btnHabla);
 
@@ -41,18 +41,16 @@ public class F_Main extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+
+                /* //otra  variante de modelo a testear y mensajes
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
-
-
-                /* //otra  variante de modelo a testear
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speech recognition demo");
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Reconocimiento de voz");
                  */
 
-
-
                 try {
-                    startActivityForResult(intent, 1);  //Aqui realiza la actividad de reconocimiento y recoge los datos
+                    //Aqui realiza la actividad de reconocimiento y recoge los datos
+                    startActivityForResult(intent, CODIGO_SOLICITUD_RECONOCIMIENTO);
                     //TODO: Aqui llamaremos a la base de datos para guardar resultado
                     //txtText.setText("");
                 } catch (ActivityNotFoundException a) {
@@ -61,14 +59,45 @@ public class F_Main extends Fragment {
                             Toast.LENGTH_SHORT);
                     t.show();
                 }
-
             }
         });
 
-        //LISTADO
-        //lvFrases = (ListView) rootView.findViewById(R.id.)
+        //PARA LISTADO
+        btLista = (ImageButton) rootView.findViewById(R.id.btnLista);
+
+        btLista.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent listadoFrases = new Intent(getContext(), A_List.class);
+                startActivity(listadoFrases);
+            }
+        });
+
+        //PARA GEOCALIZACION
+        btMap = (ImageButton) rootView.findViewById(R.id.btnMap);
+
+        btLista.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //Intent Mapa = new Intent(getContext(), XXXX.class);
+                //startActivity(Mapa);
+            }
+        });
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int codigoSolicitud, int codigoResultado, Intent data) {
+        super.onActivityResult(codigoSolicitud, codigoResultado, data);
+
+        //Validamos si el codigo de solicitud es el mismo y si la voz captada no da error
+        if (codigoSolicitud == CODIGO_SOLICITUD_RECONOCIMIENTO){
+
+            //TODO: crear metodos para guardado de frases
+            String frase = data.getStringExtra(RecognizerIntent.EXTRA_RESULTS);
+        }
+
     }
 
 

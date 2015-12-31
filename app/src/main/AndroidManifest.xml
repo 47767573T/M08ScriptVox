@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.svox" >
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!--Permiso para guardar audio del mbl-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- Permiso para guardar audio del mbl -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,6 +18,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".A_List"
+            android:label="@string/title_activity_a__list" >
         </activity>
     </application>
 
