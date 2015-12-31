@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 /**
@@ -16,9 +17,12 @@ import android.widget.Toast;
  */
 public class F_Main extends Fragment {
 
-    private ImageButton btnHabla;
-    private ImageButton btnLista;
-    private ImageButton btnMap;
+    public static final int CODIGO_SOLICITUD_RECONOCIMIENTO = 1234;
+
+    private ListView lvFrases;
+    private ImageButton btHabla;
+    private ImageButton btLista;
+    private ImageButton btMap;
 
 
     public F_Main() {
@@ -29,18 +33,24 @@ public class F_Main extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_lay, container, false);
 
+        //HABLA Y RECONOCIMIENTO
         //Determinamos el comportamiento del click en el boton de hablar
-        btnHabla = (ImageButton) rootView.findViewById(R.id.btnHabla);
+        btHabla = (ImageButton) rootView.findViewById(R.id.btnHabla);
 
-        btnHabla.setOnClickListener(new View.OnClickListener() {
+        btHabla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
 
+                /* //otra  variante de modelo a testear
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                 */
+
                 try {
                     startActivityForResult(intent, 1);
-                    //Aqui llamaremos a la base de datos para guardar resultado
+                    System.out.println("");
+                    //TODO: Aqui llamaremos a la base de datos para guardar resultado
                     //txtText.setText("");
                 } catch (ActivityNotFoundException a) {
                     Toast t = Toast.makeText(getActivity().getApplicationContext(),
@@ -51,6 +61,10 @@ public class F_Main extends Fragment {
 
             }
         });
+
+        //LISTADO
+        //lvFrases = (ListView) rootView.findViewById(R.id.)
+
         return rootView;
     }
 
