@@ -43,18 +43,21 @@ public class F_Main extends Fragment {
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
 
+
                 /* //otra  variante de modelo a testear
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speech recognition demo");
                  */
 
+
+
                 try {
-                    startActivityForResult(intent, 1);
-                    System.out.println("");
+                    startActivityForResult(intent, 1);  //Aqui realiza la actividad de reconocimiento y recoge los datos
                     //TODO: Aqui llamaremos a la base de datos para guardar resultado
                     //txtText.setText("");
                 } catch (ActivityNotFoundException a) {
                     Toast t = Toast.makeText(getActivity().getApplicationContext(),
-                            "error de compatibilidad",
+                            "error en el reconocimiento de voz de su aparato",
                             Toast.LENGTH_SHORT);
                     t.show();
                 }
