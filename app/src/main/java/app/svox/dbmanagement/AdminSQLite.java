@@ -4,11 +4,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import app.svox.F_Main;
+
 /**
  * Created by Moises on 03/01/2016.
  */
 public class AdminSQLite extends SQLiteOpenHelper{
 
+    private static final String nombreTablaFrases = F_Main.nombreTablaFrases;
 
     public AdminSQLite(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -16,11 +19,10 @@ public class AdminSQLite extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table FRASES"
-                    +"(ID int NOT NULL AUTO_INCREMENT,"
+        db.execSQL("create table "+nombreTablaFrases
+                    +"(ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                     +"CONTENIDO text,"
-                    +"FECHA date,"
-                    +"PRIMARY KEY (ID))");
+                    +"FECHA text)");
     }
 
     @Override

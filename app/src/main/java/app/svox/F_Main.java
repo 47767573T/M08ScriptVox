@@ -86,6 +86,7 @@ public class F_Main extends Fragment {
             public boolean onLongClick(View v) {
                 String frase = (String) tvUltimaFrase.getText();
                 SesionActualfrases.add(frase);
+                GuardarFrase(frase);    //Llama al metodo que guarda la frase en la BBDD
 
                 Toast.makeText(getContext(),"Frase guardada",
                         Toast.LENGTH_SHORT).show();
@@ -98,6 +99,7 @@ public class F_Main extends Fragment {
             public boolean onLongClick(View v) {
                 String frase = (String) tvSugerenciaFrase.getText();
                 SesionActualfrases.add(frase);
+                GuardarFrase(frase);    //Llama al metodo que guarda la frase en la BBDD
 
                 Toast.makeText(getContext(),"Frase sugerida guardada",
                         Toast.LENGTH_SHORT).show();
@@ -128,7 +130,6 @@ public class F_Main extends Fragment {
                 //startActivity(Mapa);
             }
         });
-
         return rootView;
     }
 
