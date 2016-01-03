@@ -18,9 +18,9 @@ public class F_Listado extends Fragment {
     ListView lvFrases;
     private ArrayList<String> itemFrase;
 
-    public F_Listado() {
-        // Required empty public constructor
-    }
+
+    //CONTRUCTOR
+    public F_Listado() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,8 +30,6 @@ public class F_Listado extends Fragment {
 
         lvFrases = (ListView) viewFrases.findViewById(R.id.livFrases);
         itemFrase = new ArrayList<>();
-
-
 
         return viewFrases;
     }

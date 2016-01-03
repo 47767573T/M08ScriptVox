@@ -1,7 +1,9 @@
 package app.svox;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,14 +15,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import app.svox.dbmanagement.AdminSQLite;
 
 /**
  * Fragmento que contiene el menu de de opciones.
  */
 public class F_Main extends Fragment {
 
+    public static final String nombreTablaFrases = "FRASES";
     public static final int CODIGO_SOLICITUD_RECONOCIMIENTO = 1;
+
 
     private ListView lvFrases;
     private ImageButton btHabla;
@@ -29,6 +38,8 @@ public class F_Main extends Fragment {
 
     private TextView tvUltimaFrase;
     private TextView tvSugerenciaFrase;
+
+    private ArrayList <String> SesionActualfrases = new ArrayList<>();
 
 
     public F_Main() {
@@ -39,7 +50,7 @@ public class F_Main extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_lay, container, false);
 
-        //PARA HABLA Y RECONOCIMIENTO
+        //PARA HABLA Y RECONOCIMIENTO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         //Determinamos el comportamiento del click en el boton de hablar
         btHabla = (ImageButton) rootView.findViewById(R.id.btnHabla);
         tvUltimaFrase = (TextView) rootView.findViewById(R.id.txvUltimaFrase);
@@ -51,10 +62,9 @@ public class F_Main extends Fragment {
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 
-                /* //otra  variante de modelo a testear y mensajes
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
-                intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Reconocimiento de voz");
-                 */
+                //otra  variante de modelo a testear y mensajes
+                //intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
+
 
                 try {
                     //Aqui realiza la actividad de reconocimiento y recoge los datos
@@ -71,7 +81,31 @@ public class F_Main extends Fragment {
             }
         });
 
-        //PARA LISTADO
+        tvUltimaFrase.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String frase = (String) tvUltimaFrase.getText();
+                SesionActualfrases.add(frase);
+
+                Toast.makeText(getContext(),"Frase guardada",
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        tvSugerenciaFrase.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String frase = (String) tvSugerenciaFrase.getText();
+                SesionActualfrases.add(frase);
+
+                Toast.makeText(getContext(),"Frase sugerida guardada",
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        //PARA LISTADO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         btLista = (ImageButton) rootView.findViewById(R.id.btnLista);
 
         btLista.setOnClickListener(new View.OnClickListener(){
@@ -81,6 +115,8 @@ public class F_Main extends Fragment {
                 startActivity(listadoFrases);
             }
         });
+
+
 
         //PARA GEOCALIZACION
         btMap = (ImageButton) rootView.findViewById(R.id.btnMap);
@@ -108,14 +144,37 @@ public class F_Main extends Fragment {
                     ArrayList<String> frases = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     tvUltimaFrase.setText(frases.get(0));   //Aqui escribe el resultado en el textView indicado
 
-                    tvSugerenciaFrase.setText(frases.get(1));
-
-                    //TODO: implementar metodo de guardado en BBDD
+                    tvSugerenciaFrase.setText(frases.get(15));
                 }
                 break;
             }
         }
     }
+
+    public void GuardarFrase(String contenido){
+        AdminSQLite admin = new AdminSQLite(getContext(), nombreTablaFrases, null, 1);
+        SQLiteDatabase db = admin.getWritableDatabase();
+        ContentValues registro = new ContentValues();
+
+        //Definimos el registro campo a campo
+        registro.put("CONTENIDO", contenido);
+        registro.put("FECHA", getFechaActual());
+
+        //Introducimos el registro en la bd
+        db.insert(nombreTablaFrases, null, registro);
+        db.close();
+        tvUltimaFrase.setText("");
+        tvSugerenciaFrase.setText("");
+    }
+
+    public String getFechaActual(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String ahora = sdf.format(new Date());
+
+        return ahora;
+    }
+
+
 
 }
 
