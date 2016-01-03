@@ -1,7 +1,10 @@
 package app.svox;
 
+import app.svox.dbmanagement.*;
+
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.speech.RecognizerIntent;
@@ -86,10 +89,14 @@ public class F_Main extends Fragment {
             public boolean onLongClick(View v) {
                 String frase = (String) tvUltimaFrase.getText();
                 SesionActualfrases.add(frase);
-                GuardarFrase(frase);    //Llama al metodo que guarda la frase en la BBDD
+                GestorSQLite.GuardarFrase(getContext(), frase);    //Llama al metodo que guarda la frase en la BBDD
 
-                Toast.makeText(getContext(),"Frase guardada",
+                Toast.makeText(getContext(), "Frase guardada",
                         Toast.LENGTH_SHORT).show();
+
+                tvUltimaFrase.setText("");
+                tvSugerenciaFrase.setText("");
+
                 return false;
             }
         });
@@ -99,10 +106,14 @@ public class F_Main extends Fragment {
             public boolean onLongClick(View v) {
                 String frase = (String) tvSugerenciaFrase.getText();
                 SesionActualfrases.add(frase);
-                GuardarFrase(frase);    //Llama al metodo que guarda la frase en la BBDD
+                GestorSQLite.GuardarFrase(getContext(), frase);    //Llama al metodo que guarda la frase en la BBDD
 
-                Toast.makeText(getContext(),"Frase sugerida guardada",
+                Toast.makeText(getContext(), "Frase sugerida guardada",
                         Toast.LENGTH_SHORT).show();
+
+                tvUltimaFrase.setText("");
+                tvSugerenciaFrase.setText("");
+
                 return false;
             }
         });
@@ -110,7 +121,7 @@ public class F_Main extends Fragment {
         //PARA LISTADO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         btLista = (ImageButton) rootView.findViewById(R.id.btnLista);
 
-        btLista.setOnClickListener(new View.OnClickListener(){
+        btLista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent listadoFrases = new Intent(getContext(), A_List.class);
@@ -123,7 +134,7 @@ public class F_Main extends Fragment {
         //PARA GEOCALIZACION
         btMap = (ImageButton) rootView.findViewById(R.id.btnMap);
 
-        btLista.setOnClickListener(new View.OnClickListener(){
+        btLista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Intent Mapa = new Intent(getContext(), XXXX.class);
@@ -145,37 +156,12 @@ public class F_Main extends Fragment {
                     ArrayList<String> frases = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     tvUltimaFrase.setText(frases.get(0));   //Aqui escribe el resultado en el textView indicado
 
-                    tvSugerenciaFrase.setText(frases.get(15));
+                    tvSugerenciaFrase.setText(frases.get(1));
                 }
                 break;
             }
         }
     }
-
-    public void GuardarFrase(String contenido){
-        AdminSQLite admin = new AdminSQLite(getContext(), nombreTablaFrases, null, 1);
-        SQLiteDatabase db = admin.getWritableDatabase();
-        ContentValues registro = new ContentValues();
-
-        //Definimos el registro campo a campo
-        registro.put("CONTENIDO", contenido);
-        registro.put("FECHA", getFechaActual());
-
-        //Introducimos el registro en la bd
-        db.insert(nombreTablaFrases, null, registro);
-        db.close();
-        tvUltimaFrase.setText("");
-        tvSugerenciaFrase.setText("");
-    }
-
-    public String getFechaActual(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String ahora = sdf.format(new Date());
-
-        return ahora;
-    }
-
-
 
 }
 
