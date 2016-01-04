@@ -12,6 +12,9 @@ import app.svox.F_Main;
 public class AdminSQLite extends SQLiteOpenHelper{
 
     private static final String nombreTablaFrases = F_Main.nombreTablaFrases;
+    String sqlCreate = "create table "+nombreTablaFrases
+            +" (FECHA text,"
+            +" CONTENIDO text)";
 
     public AdminSQLite(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -20,13 +23,13 @@ public class AdminSQLite extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table "+nombreTablaFrases
-                    +"(ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    +"CONTENIDO text,"
-                    +"FECHA text)");
+                    +" (FECHA text,"
+                    +" CONTENIDO text)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS Usuarios");
+        db.execSQL(sqlCreate);
     }
 }

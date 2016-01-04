@@ -3,11 +3,16 @@ package app.svox;
 import app.svox.dbmanagement.*;
 
 import android.content.ActivityNotFoundException;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.location.LocationManager;
 import android.speech.RecognizerIntent;
+//import android.media.MediaPlayer.OnCompletionListener;
+//import android.media.MediaPlayer;
+//import android.media.MediaRecorder;
+
+import android.location.LocationListener;
+
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,15 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 
-import app.svox.dbmanagement.AdminSQLite;
 
 /**
  * Fragmento que contiene el menu de de opciones.
@@ -33,9 +36,16 @@ public class F_Main extends Fragment {
     public static final String nombreTablaFrases = "FRASES";
     public static final int CODIGO_SOLICITUD_RECONOCIMIENTO = 1;
 
+    //Fase 3 guardado de voz en Stand by
+    //MediaRecorder mRecorder;
+    //MediaPlayer mPlayer;
+    //File archivo;
+    private RadioButton rbGrabar;
+
 
     private ListView lvFrases;
     private ImageButton btHabla;
+
     private ImageButton btLista;
     private ImageButton btMap;
 
@@ -53,11 +63,15 @@ public class F_Main extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_lay, container, false);
 
+        rbGrabar = (RadioButton) rootView.findViewById(R.id.rabGrabar);
+
         //PARA HABLA Y RECONOCIMIENTO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         //Determinamos el comportamiento del click en el boton de hablar
         btHabla = (ImageButton) rootView.findViewById(R.id.btnHabla);
         tvUltimaFrase = (TextView) rootView.findViewById(R.id.txvUltimaFrase);
         tvSugerenciaFrase = (TextView) rootView.findViewById(R.id.txvFraseSugerencia);
+        rbGrabar = (RadioButton) rootView.findViewById(R.id.rabGrabar);
+
 
         btHabla.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +169,6 @@ public class F_Main extends Fragment {
 
                     ArrayList<String> frases = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     tvUltimaFrase.setText(frases.get(0));   //Aqui escribe el resultado en el textView indicado
-
                     tvSugerenciaFrase.setText(frases.get(1));
                 }
                 break;

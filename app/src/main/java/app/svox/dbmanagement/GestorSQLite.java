@@ -2,9 +2,11 @@ package app.svox.dbmanagement;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import app.svox.F_Main;
@@ -22,12 +24,15 @@ public class GestorSQLite {
         ContentValues registro = new ContentValues();
 
         //Definimos el registro campo a campo
-        registro.put("CONTENIDO", contenido);
         registro.put("FECHA", getFechaActual());
+        registro.put("CONTENIDO", contenido);
 
         //Introducimos el registro en la bd
         db.insert(nombreTablaFrases, null, registro);
         db.close();
+    }
+
+    public static void getFraseSegunID(){
     }
 
 
@@ -38,5 +43,27 @@ public class GestorSQLite {
         return ahora;
     }
 
+    public static ArrayList<String> getListFrases(){
+        ArrayList<String> lista = new ArrayList<>();
 
+        AdminSQLite admin = new AdminSQLite(null, nombreTablaFrases, null, 1);
+        String qAll = "SELECT * FROM "+nombreTablaFrases;
+        SQLiteDatabase db = admin.getWritableDatabase();
+        Cursor cursor = db.rawQuery(qAll, null);
+
+        while (cursor.moveToNext()) {
+            int fecha = cursor.getInt(0);
+            String contenido = cursor.getString(1);
+
+            String itemLista = fecha+" - "+contenido;
+            lista.add(itemLista);
+        }
+
+        /*for (int i = 0; i < lista.size(); i++) {
+            String[] listaStr = new String[lista.size()];
+            listaStr[i] = lista.get(i);
+        }*/
+        return lista;
+
+    }
 }

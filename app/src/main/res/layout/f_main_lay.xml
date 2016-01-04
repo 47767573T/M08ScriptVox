@@ -12,10 +12,10 @@
         android:src="@android:drawable/ic_btn_speak_now"
         android:layout_marginTop="34dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/rabGrabar"
+        android:layout_toLeftOf="@+id/rabGrabar" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -69,5 +69,16 @@
             android:layout_gravity="left|bottom"
             android:textColor="#8b42414a" />
     </FrameLayout>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Grabacion"
+        android:id="@+id/rabGrabar"
+        android:layout_alignTop="@+id/btnHabla"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/btnHabla"
+        android:checked="false" />
 
 </RelativeLayout>
