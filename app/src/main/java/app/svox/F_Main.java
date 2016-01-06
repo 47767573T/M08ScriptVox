@@ -110,6 +110,9 @@ public class F_Main extends Fragment {
                 Toast.makeText(getContext(), "Frase guardada",
                         Toast.LENGTH_SHORT).show();
 
+                Intent listadoFrases = new Intent(getContext(), A_List.class);
+                startActivity(listadoFrases);
+
                 tvUltimaFrase.setText("");
                 tvSugerenciaFrase.setText("");
 

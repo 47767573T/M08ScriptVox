@@ -15,9 +15,11 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,7 @@ public class F_Listado extends Fragment {
 
         AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext());
         Vector<String> vector = admin.extraerFrases();
-        
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getActivity().getApplicationContext(),
                 R.layout.item_list_lay,vector);
@@ -51,8 +53,16 @@ public class F_Listado extends Fragment {
         lvFrases = (ListView) viewFrases.findViewById(R.id.livFrases);
         lvFrases.setAdapter(arrayAdapter);
 
+        lvFrases.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                String contenido = lvFrases.getItemAtPosition(position).toString();
 
+                Toast.makeText(getActivity().getApplicationContext(), contenido,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
 
         return viewFrases;
     }

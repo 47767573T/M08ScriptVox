@@ -68,10 +68,15 @@ public class AdminSQLite extends SQLiteOpenHelper{
         return resultado;
     }
 
+
+
     public static String getFechaActual(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String ahora = sdf.format(new Date());
 
         return ahora;
     }
+
+
+
 }
