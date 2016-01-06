@@ -57,7 +57,7 @@ public class GestorSQLite {
             lista.add(itemLista);
         }
 
-        
+
         return lista;
 
     }

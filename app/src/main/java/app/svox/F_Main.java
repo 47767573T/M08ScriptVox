@@ -54,6 +54,7 @@ public class F_Main extends Fragment {
     private TextView tvSugerenciaFrase;
 
     private ArrayList <String> SesionActualfrases = new ArrayList<>();
+    public AdminSQLite admin;
 
 
     public F_Main() {
@@ -83,7 +84,6 @@ public class F_Main extends Fragment {
                 //otra  variante de modelo a testear y mensajes
                 //intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
 
-
                 try {
                     //Aqui realiza la actividad de reconocimiento y recoge los datos
                     startActivityForResult(intent, CODIGO_SOLICITUD_RECONOCIMIENTO);
@@ -104,7 +104,8 @@ public class F_Main extends Fragment {
             public boolean onLongClick(View v) {
                 String frase = (String) tvUltimaFrase.getText();
                 SesionActualfrases.add(frase);
-                GestorSQLite.GuardarFrase(getContext(), frase);    //Llama al metodo que guarda la frase en la BBDD
+                admin = new AdminSQLite(getContext());
+                admin.addFrase(frase);
 
                 Toast.makeText(getContext(), "Frase guardada",
                         Toast.LENGTH_SHORT).show();
@@ -121,7 +122,8 @@ public class F_Main extends Fragment {
             public boolean onLongClick(View v) {
                 String frase = (String) tvSugerenciaFrase.getText();
                 SesionActualfrases.add(frase);
-                GestorSQLite.GuardarFrase(getContext(), frase);    //Llama al metodo que guarda la frase en la BBDD
+                admin = new AdminSQLite(getContext());
+                admin.addFrase(frase);
 
                 Toast.makeText(getContext(), "Frase sugerida guardada",
                         Toast.LENGTH_SHORT).show();
@@ -172,9 +174,9 @@ public class F_Main extends Fragment {
             case CODIGO_SOLICITUD_RECONOCIMIENTO: {
                 if (resultCode == A_Main.RESULT_OK && null != intent) {
 
-                    ArrayList<String> frases = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    tvUltimaFrase.setText(frases.get(0));   //Aqui escribe el resultado en el textView indicado
-                    tvSugerenciaFrase.setText(frases.get(1));
+                    ArrayList<String> afrases = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    tvUltimaFrase.setText(afrases.get(0));   //Aqui escribe el resultado en el textView indicado
+                    tvSugerenciaFrase.setText(afrases.get(1));
                 }
                 break;
             }

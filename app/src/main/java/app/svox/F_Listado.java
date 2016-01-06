@@ -21,6 +21,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 
 public class F_Listado extends Fragment {
@@ -40,21 +41,19 @@ public class F_Listado extends Fragment {
         // Inflate the layout for this fragment
         View viewFrases = inflater.inflate(R.layout.f_listado_lay, container, false);
 
-        //frases = GestorSQLite.getListFrases();
-
-        //Testeando con arraylist de prueba
-        ArrayList<String> listArray = new ArrayList<>();
-        listArray.add("esto");
-        listArray.add("es");
-        listArray.add("una");
-        listArray.add("prueba");
-
+        AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext());
+        Vector<String> vector = admin.extraerFrases();
+        
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getActivity().getApplicationContext(),
-                R.layout.item_list_lay,listArray);
+                R.layout.item_list_lay,vector);
 
         lvFrases = (ListView) viewFrases.findViewById(R.id.livFrases);
         lvFrases.setAdapter(arrayAdapter);
+
+
+
+
         return viewFrases;
     }
 

@@ -1,10 +1,13 @@
 package app.svox.dbmanagement;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import app.svox.F_Main;
@@ -26,7 +29,8 @@ public class AdminSQLite extends SQLiteOpenHelper{
             +" CONTENIDO "+STRING_TYPE+")";
 
     public AdminSQLite(Context context) {
-        super(context, "SVOX_DB", null, 1);
+        super(context, "SVOX1" +
+                "_DB", null, 1);
     }
 
     @Override
@@ -40,18 +44,20 @@ public class AdminSQLite extends SQLiteOpenHelper{
         db.execSQL(sqlCreate);
     }
 
-    public void guardarFrase(String fecha, String contenido){
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO "+NOMBRE_TABLA_FRASES+" VALUES( null, "
-                + "'"+fecha+"', "
-                + "'"+contenido+"')"
-        );
+    public void addFrase(String contenido){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("FECHA", getFechaActual());
+        values.put("CONTENIDO", contenido);
+
+        db.insert(NOMBRE_TABLA_FRASES, null, values);
     }
 
     public Vector<String> extraerFrases(){
         Vector<String> resultado = new Vector <String>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+NOMBRE_TABLA_FRASES, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + NOMBRE_TABLA_FRASES, null);
 
         while (cursor.moveToNext()){
             resultado.add("("+cursor.getString(1)+") "
@@ -60,5 +66,12 @@ public class AdminSQLite extends SQLiteOpenHelper{
         }
         cursor.close();
         return resultado;
+    }
+
+    public static String getFechaActual(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String ahora = sdf.format(new Date());
+
+        return ahora;
     }
 }
