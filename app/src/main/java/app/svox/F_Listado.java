@@ -6,6 +6,7 @@ import app.svox.dbmanagement.*;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class F_Listado extends Fragment {
@@ -27,6 +29,7 @@ public class F_Listado extends Fragment {
     private ArrayList<String> frases;
     private ArrayAdapter adapter;
 
+    public View view;
 
     //CONTRUCTOR
     public F_Listado() { }
@@ -38,25 +41,27 @@ public class F_Listado extends Fragment {
         View viewFrases = inflater.inflate(R.layout.f_listado_lay, container, false);
 
         //frases = GestorSQLite.getListFrases();
-        frases.add("esto");
-        frases.add("es");
-        frases.add("una");
-        frases.add("prueba");
+
+        //Testeando con arraylist de prueba
+        ArrayList<String> listArray = new ArrayList<>();
+        listArray.add("esto");
+        listArray.add("es");
+        listArray.add("una");
+        listArray.add("prueba");
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                getActivity().getApplicationContext(),
+                R.layout.item_list_lay,listArray);
+
         lvFrases = (ListView) viewFrases.findViewById(R.id.livFrases);
-
-        adapter = new ArrayAdapter<>(
-                getActivity().getApplicationContext()
-                , 0
-                , frases);
-
-        lvFrases.setAdapter(adapter);
-
+        lvFrases.setAdapter(arrayAdapter);
         return viewFrases;
     }
 
-    /*@Override
-    public void onCreate(Bundle savedInstanceState) { }*/
-
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
 
 

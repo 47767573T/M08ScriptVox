@@ -1,6 +1,5 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment"
     android:name="app.svox.F_Main"
     tools:layout="@layout/f_main_lay"
     android:layout_width="match_parent"

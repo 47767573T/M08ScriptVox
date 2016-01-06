@@ -5,6 +5,7 @@ import app.svox.dbmanagement.*;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.location.LocationManager;
 import android.speech.RecognizerIntent;
 //import android.media.MediaPlayer.OnCompletionListener;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
  */
 public class F_Main extends Fragment {
 
-    public static final String nombreTablaFrases = "FRASES";
+    public static final String NOMBRE_TABLA_FRASES = "FRASES";
     public static final int CODIGO_SOLICITUD_RECONOCIMIENTO = 1;
 
     //Fase 3 guardado de voz en Stand by
@@ -125,6 +126,9 @@ public class F_Main extends Fragment {
                 Toast.makeText(getContext(), "Frase sugerida guardada",
                         Toast.LENGTH_SHORT).show();
 
+                Intent listadoFrases = new Intent(getContext(), A_List.class);
+                startActivity(listadoFrases);
+
                 tvUltimaFrase.setText("");
                 tvSugerenciaFrase.setText("");
 
@@ -134,12 +138,13 @@ public class F_Main extends Fragment {
 
         //PARA LISTADO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         btLista = (ImageButton) rootView.findViewById(R.id.btnLista);
-
-        btLista.setOnClickListener(new View.OnClickListener() {
+        btLista.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent listadoFrases = new Intent(getContext(), A_List.class);
+            public boolean onLongClick(View v) {
+                Intent listadoFrases = new Intent(getActivity().getApplication(), A_List.class);
                 startActivity(listadoFrases);
+
+                return false;
             }
         });
 

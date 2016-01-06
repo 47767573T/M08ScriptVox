@@ -28,7 +28,8 @@
         </activity>
         <activity
             android:name=".A_List"
-            android:label="@string/title_activity_a__list" >
+            android:label="@string/title_activity_list"
+            android:parentActivityName=".A_Main">
         </activity>
     </application>
 

@@ -1,4 +1,4 @@
-package app.svox.dbmanagement;
+/*package app.svox.dbmanagement;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,15 +11,13 @@ import java.util.Date;
 
 import app.svox.F_Main;
 
-/**
- * Created by Moises on 03/01/2016.
- */
+
 public class GestorSQLite {
 
-    private static final String nombreTablaFrases = F_Main.nombreTablaFrases;
+    private static final String NOMBRE_TABLA_FRASES = F_Main.NOMBRE_TABLA_FRASES;
 
     public static void GuardarFrase(Context context, String contenido) {
-        AdminSQLite admin = new AdminSQLite(context, nombreTablaFrases, null, 1);
+        AdminSQLite admin = new AdminSQLite(context, NOMBRE_TABLA_FRASES, null, 1);
         SQLiteDatabase db = admin.getWritableDatabase();
         ContentValues registro = new ContentValues();
 
@@ -28,7 +26,7 @@ public class GestorSQLite {
         registro.put("CONTENIDO", contenido);
 
         //Introducimos el registro en la bd
-        db.insert(nombreTablaFrases, null, registro);
+        db.insert(NOMBRE_TABLA_FRASES, null, registro);
         db.close();
     }
 
@@ -46,8 +44,8 @@ public class GestorSQLite {
     public static ArrayList<String> getListFrases(){
         ArrayList<String> lista = new ArrayList<>();
 
-        AdminSQLite admin = new AdminSQLite(null, nombreTablaFrases, null, 1);
-        String qAll = "SELECT * FROM "+nombreTablaFrases;
+        AdminSQLite admin = new AdminSQLite(null, NOMBRE_TABLA_FRASES, null, 1);
+        String qAll = "SELECT * FROM "+NOMBRE_TABLA_FRASES;
         SQLiteDatabase db = admin.getWritableDatabase();
         Cursor cursor = db.rawQuery(qAll, null);
 
@@ -59,11 +57,9 @@ public class GestorSQLite {
             lista.add(itemLista);
         }
 
-        /*for (int i = 0; i < lista.size(); i++) {
-            String[] listaStr = new String[lista.size()];
-            listaStr[i] = lista.get(i);
-        }*/
+        
         return lista;
 
     }
 }
+*/
