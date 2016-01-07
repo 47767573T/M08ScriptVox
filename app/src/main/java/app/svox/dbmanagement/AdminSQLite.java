@@ -54,21 +54,24 @@ public class AdminSQLite extends SQLiteOpenHelper{
         db.insert(NOMBRE_TABLA_FRASES, null, values);
     }
 
-    public Vector<String> extraerFrases(){
-        Vector<String> resultado = new Vector <String>();
+    public Vector<String> getFrases(){
+        Vector<String> resultado = new Vector <>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + NOMBRE_TABLA_FRASES, null);
 
         while (cursor.moveToNext()){
-            resultado.add("("+cursor.getString(1)+") "
-                    +cursor.getInt(0)+" - "
+            resultado.add(cursor.getInt(1)+" - "
                     +cursor.getString(2));
         }
         cursor.close();
         return resultado;
     }
 
+    public void modifyFrase(int id, String fraseNueva){
+        SQLiteDatabase db = getWritableDatabase();
 
+        db.execSQL("UPDATE "+NOMBRE_TABLA_FRASES+" SET contenido='"+fraseNueva+"' WHERE ID="+ id);
+    }
 
     public static String getFechaActual(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -76,7 +79,4 @@ public class AdminSQLite extends SQLiteOpenHelper{
 
         return ahora;
     }
-
-
-
 }

@@ -33,8 +33,7 @@ import java.util.zip.Inflater;
 public class F_Listado extends Fragment {
 
     ListView lvFrases;
-    private ArrayList<String> frases;
-    private ArrayAdapter adapter;
+    String nuevaFrase = "";
 
     //CONTRUCTOR
     public F_Listado() { }
@@ -48,9 +47,9 @@ public class F_Listado extends Fragment {
         View viewFrases = inflater.inflate(R.layout.f_listado_lay, container, false);
 
         AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext());
-        Vector<String> vector = admin.extraerFrases();
+        Vector<String> vector = admin.getFrases();
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity().getApplicationContext(),
                 R.layout.item_list_lay,vector);
 
@@ -93,16 +92,27 @@ public class F_Listado extends Fragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuContextInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext());
+
         switch (item.getItemId()){
             case R.id.edit:
+
+
+                admin.modifyFrase(menuContextInfo.position, nuevaFrase);
+                Vector<String> vector = admin.getFrases();
+
+                ArrayAdapter<String> newAdapter = new ArrayAdapter<>(
+                        getActivity().getApplicationContext(),
+                        R.layout.item_list_lay,vector);
+
+                lvFrases.setAdapter(newAdapter);
+
                 return true;
             case R.id.delete:
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
-
-
     }
 
     public void onCreate(Bundle savedInstanceState) {
