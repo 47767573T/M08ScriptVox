@@ -19,11 +19,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,8 +43,7 @@ public class F_Main extends Fragment {
     //MediaRecorder mRecorder;
     //MediaPlayer mPlayer;
     //File archivo;
-    private RadioButton rbGrabar;
-
+    private ToggleButton tbGrabar;
 
     private ListView lvFrases;
     private ImageButton btHabla;
@@ -65,15 +66,12 @@ public class F_Main extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_lay, container, false);
 
-        rbGrabar = (RadioButton) rootView.findViewById(R.id.rabGrabar);
-
         //PARA HABLA Y RECONOCIMIENTO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         //Determinamos el comportamiento del click en el boton de hablar
         btHabla = (ImageButton) rootView.findViewById(R.id.btnHabla);
         tvUltimaFrase = (TextView) rootView.findViewById(R.id.txvUltimaFrase);
         tvSugerenciaFrase = (TextView) rootView.findViewById(R.id.txvFraseSugerencia);
-        rbGrabar = (RadioButton) rootView.findViewById(R.id.rabGrabar);
-
+        tbGrabar = (ToggleButton) rootView.findViewById(R.id.tobGrabar);
 
         btHabla.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,17 +141,13 @@ public class F_Main extends Fragment {
 
         //PARA LISTADO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         btLista = (ImageButton) rootView.findViewById(R.id.btnLista);
-        btLista.setOnLongClickListener(new View.OnLongClickListener() {
+        btLista.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 Intent listadoFrases = new Intent(getActivity().getApplication(), A_List.class);
                 startActivity(listadoFrases);
-
-                return false;
             }
         });
-
-
 
         //PARA GEOCALIZACION
         btMap = (ImageButton) rootView.findViewById(R.id.btnMap);

@@ -32,8 +32,6 @@ public class F_Listado extends Fragment {
     private ArrayList<String> frases;
     private ArrayAdapter adapter;
 
-    public View view;
-
     //CONTRUCTOR
     public F_Listado() { }
 

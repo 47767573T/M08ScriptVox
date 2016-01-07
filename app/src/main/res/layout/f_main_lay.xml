@@ -17,8 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/rabGrabar"
-        android:layout_toLeftOf="@+id/rabGrabar" />
+        android:layout_toStartOf="@+id/tobGrabar"
+        android:layout_toLeftOf="@+id/tobGrabar" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -49,12 +49,14 @@
         android:layout_below="@+id/btnHabla"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnLista">
+        android:layout_above="@+id/btnLista"
+        android:id="@+id/frameLayout">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="144dp"
             android:id="@+id/txvUltimaFrase"
+            android:text="Frase Reconocida"
+            android:layout_width="match_parent"
+            android:layout_height="91dp"
             android:layout_below="@+id/btnHabla"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -62,26 +64,26 @@
             android:layout_alignEnd="@+id/txvFraseSugerencia"
             android:textAlignment="center"
             android:textStyle="bold"
-            android:hint="Frase escuchada" />
+            android:textColor="#8b42414a" />
 
         <TextView
+            android:id="@+id/txvFraseSugerencia"
             android:layout_width="match_parent"
             android:layout_height="91dp"
             android:text="Sugerencia"
-            android:id="@+id/txvFraseSugerencia"
             android:layout_gravity="left|bottom"
             android:textColor="#8b42414a" />
     </FrameLayout>
 
-    <RadioButton
+    <ToggleButton
+        android:textOff="Rec"
+        android:textOn="Rec"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rec"
-        android:id="@+id/rabGrabar"
+        android:text="Grabar"
+        android:id="@+id/tobGrabar"
         android:layout_alignTop="@+id/btnHabla"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/btnHabla"
-        android:checked="false" />
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
