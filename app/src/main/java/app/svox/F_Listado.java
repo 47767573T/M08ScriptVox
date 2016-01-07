@@ -12,7 +12,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.zip.Inflater;
 
 
 public class F_Listado extends Fragment {
@@ -34,6 +38,8 @@ public class F_Listado extends Fragment {
 
     //CONTRUCTOR
     public F_Listado() { }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +56,8 @@ public class F_Listado extends Fragment {
 
         lvFrases = (ListView) viewFrases.findViewById(R.id.livFrases);
         lvFrases.setAdapter(arrayAdapter);
+        registerForContextMenu(lvFrases);   //registramos el listView para usar el menu contextual
+
 
         lvFrases.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -62,7 +70,39 @@ public class F_Listado extends Fragment {
             }
         });
 
+        lvFrases.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                return false;
+            }
+        });
+
+        registerForContextMenu(lvFrases);   //registramos el listView para usar el menu contextual
+
         return viewFrases;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater mInflater = getActivity().getMenuInflater();
+        mInflater.inflate(R.menu.menu_context_list,menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuContextInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()){
+            case R.id.edit:
+                return true;
+            case R.id.delete:
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+
+
     }
 
     public void onCreate(Bundle savedInstanceState) {

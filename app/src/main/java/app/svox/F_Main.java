@@ -108,8 +108,8 @@ public class F_Main extends Fragment {
                 Toast.makeText(getContext(), "Frase guardada",
                         Toast.LENGTH_SHORT).show();
 
-                Intent listadoFrases = new Intent(getContext(), A_List.class);
-                startActivity(listadoFrases);
+                /*Intent listadoFrases = new Intent(getContext(), A_List.class);
+                startActivity(listadoFrases);*/
 
                 tvUltimaFrase.setText("");
                 tvSugerenciaFrase.setText("");
@@ -129,8 +129,8 @@ public class F_Main extends Fragment {
                 Toast.makeText(getContext(), "Frase sugerida guardada",
                         Toast.LENGTH_SHORT).show();
 
-                Intent listadoFrases = new Intent(getContext(), A_List.class);
-                startActivity(listadoFrases);
+                /*Intent listadoFrases = new Intent(getContext(), A_List.class);
+                startActivity(listadoFrases);*/
 
                 tvUltimaFrase.setText("");
                 tvSugerenciaFrase.setText("");
@@ -141,11 +141,12 @@ public class F_Main extends Fragment {
 
         //PARA LISTADO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         btLista = (ImageButton) rootView.findViewById(R.id.btnLista);
-        btLista.setOnClickListener(new View.OnClickListener() {
+        btLista.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onLongClick(View v) {
                 Intent listadoFrases = new Intent(getActivity().getApplication(), A_List.class);
                 startActivity(listadoFrases);
+                return false;
             }
         });
 
