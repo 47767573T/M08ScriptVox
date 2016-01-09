@@ -33,17 +33,17 @@ import java.util.ArrayList;
 
 
 /**
- * Fragmento que contiene el menu de de opciones.
+ * Fragmento que contiene el menu Inicial.
  */
-public class F_Main extends Fragment {
+public class F_Main extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
+    //Variables que definen la BBDD
+    public AdminSQLite admin;
     public static final String NOMBRE_TABLA_FRASES = "FRASES";
+    public static final String NOMBRE_TABLA_PALABRAS = "PALABRAS";
     public static final int CODIGO_SOLICITUD_RECONOCIMIENTO = 1;
 
-    //Fase 3 guardado de voz en Stand by
-    //MediaRecorder mRecorder;
-    //MediaPlayer mPlayer;
-    //File archivo;
+    //Elementos de la interfaz grafica
     private ToggleButton tbGrabar;
 
     private ListView lvFrases;
@@ -55,10 +55,10 @@ public class F_Main extends Fragment {
     private TextView tvUltimaFrase;
     private TextView tvSugerenciaFrase;
 
+    //Elementos pasivos auxiliares
     private ArrayList <String> SesionActualfrases = new ArrayList<>();
-    public AdminSQLite admin;
 
-
+    //CONSTRUCTOR
     public F_Main() {
     }
 
@@ -70,11 +70,18 @@ public class F_Main extends Fragment {
         //PARA HABLA Y RECONOCIMIENTO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         //Determinamos el comportamiento del click en el boton de hablar
         btHabla = (ImageButton) rootView.findViewById(R.id.btnHabla);
+        btHabla.setOnClickListener(this);
+        btHabla.setOnLongClickListener(this);
         tvUltimaFrase = (TextView) rootView.findViewById(R.id.txvUltimaFrase);
+        tvUltimaFrase.setOnClickListener(this);
+        tvUltimaFrase.setOnLongClickListener(this);
         tvSugerenciaFrase = (TextView) rootView.findViewById(R.id.txvFraseSugerencia);
+        tvSugerenciaFrase.setOnClickListener(this);
+        tvSugerenciaFrase.setOnLongClickListener(this);
         tbGrabar = (ToggleButton) rootView.findViewById(R.id.tobGrabar);
 
-        btHabla.setOnClickListener(new View.OnClickListener() {
+
+        /*btHabla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -96,21 +103,18 @@ public class F_Main extends Fragment {
                     t.show();
                 }
             }
-        });
+        });*/
 
         tvUltimaFrase.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 String frase = (String) tvUltimaFrase.getText();
                 SesionActualfrases.add(frase);
-                admin = new AdminSQLite(getContext());
+                admin = new AdminSQLite(getContext(), 2);
                 admin.addFrase(frase);
 
                 Toast.makeText(getContext(), "Frase guardada",
                         Toast.LENGTH_SHORT).show();
-
-                /*Intent listadoFrases = new Intent(getContext(), A_List.class);
-                startActivity(listadoFrases);*/
 
                 tvUltimaFrase.setText("");
                 tvSugerenciaFrase.setText("");
@@ -124,7 +128,7 @@ public class F_Main extends Fragment {
             public boolean onLongClick(View v) {
                 String frase = (String) tvSugerenciaFrase.getText();
                 SesionActualfrases.add(frase);
-                admin = new AdminSQLite(getContext());
+                admin = new AdminSQLite(getContext(), 2);
                 admin.addFrase(frase);
 
                 Toast.makeText(getContext(), "Frase sugerida guardada",
@@ -181,6 +185,89 @@ public class F_Main extends Fragment {
             }
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnHabla:         //BOTON DE LLAMADA AL METODO DE RECONOCIMIENTO
+                Intent intHabla = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intHabla.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+
+                try {
+                    startActivityForResult(intHabla, CODIGO_SOLICITUD_RECONOCIMIENTO);
+                    tvUltimaFrase.setText("");
+                    tvSugerenciaFrase.setText("");
+
+                } catch (ActivityNotFoundException a) {
+                    toastMsg (2,"F_Main, metodo Onclick");
+                }
+                break;
+
+            case R.id.txvUltimaFrase:
+                break;
+
+            case R.id.txvFraseSugerencia:
+                break;
+
+            case R.id.btnLista:
+                Intent listadoFrases = new Intent(getActivity().getApplication(), A_List.class);
+                startActivity(listadoFrases);
+
+                break;
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        admin = new AdminSQLite(getContext(), 2);
+
+        switch (v.getId()) {
+            //case R.id.btnHabla:
+                //break;
+
+            case R.id.txvUltimaFrase:       //Guardar la frase del TextView
+                SesionActualfrases.add((String) tvUltimaFrase.getText());
+                admin.addFrase((String) tvUltimaFrase.getText());
+
+                toastMsg(1, "Frase");
+                tvUltimaFrase.setText("");
+                tvSugerenciaFrase.setText("");
+
+                break;
+
+            case R.id.txvFraseSugerencia:   //Guardar la frase sugerida del TextView
+                SesionActualfrases.add((String) tvSugerenciaFrase.getText());
+                admin.addFrase((String) tvSugerenciaFrase.getText());
+
+                toastMsg(1, "Frase Sugerida");
+                tvUltimaFrase.setText("");
+                tvSugerenciaFrase.setText("");
+
+                break;
+
+            case R.id.btnLista:
+                Intent listadoFrases = new Intent(getActivity().getApplication(), A_List.class);
+                startActivity(listadoFrases);
+
+                break;
+        }
+        return false;
+    }
+
+    public void toastMsg (int option, String msgAux){
+        switch (option){
+            case 1: //GUARDAR
+                Toast.makeText(getContext(), msgAux+" guardada",
+                        Toast.LENGTH_SHORT).show();
+                break;
+
+            case 2: //ERROR
+                Toast.makeText(getContext(), "ERROR en "+msgAux,
+                        Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+
 
 }
 

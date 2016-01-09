@@ -47,7 +47,7 @@ public class F_Listado extends Fragment {
         // Inflate the layout for this fragment
         View viewFrases = inflater.inflate(R.layout.f_listado_lay, container, false);
 
-        AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext());
+        AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext(), 2);
         Vector<String> vector = admin.getFrases();
 
         Log.d("fecha arrayAdapter:",vector.lastElement().toString());
@@ -94,7 +94,7 @@ public class F_Listado extends Fragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuContextInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext());
+        AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext(), 2);
 
         switch (item.getItemId()){
             case R.id.edit:
@@ -113,9 +113,6 @@ public class F_Listado extends Fragment {
                 //Extraemos la fecha del renglon del listview seleccionado
                 int idPos = menuContextInfo.position;
                 String str = lvFrases.getItemAtPosition(idPos).toString();
-                //String fechaSeleccionada = textoDeLinea.substring(0,19);
-
-                Log.d("XXX", "("+str+")");
 
                 //Borramos la frase segun la fecha y reordenamos el list
                 //admin.deleteFrase(fechaSeleccionada);
@@ -126,6 +123,10 @@ public class F_Listado extends Fragment {
                 lvFrases.setAdapter(newAdapter);
 
                 return true;
+            case R.id.taggear:
+
+                return true;
+
             default:
                 return super.onContextItemSelected(item);
         }

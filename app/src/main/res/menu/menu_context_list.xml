@@ -4,6 +4,9 @@
     <item android:id="@+id/edit" android:title="@string/list_context_menu_edit">
     </item>
 
+    <item android:id="@+id/taggear" android:title="@string/list_context_menu_delete">
+    </item>
+
     <item android:id="@+id/delete" android:title="@string/list_context_menu_delete">
     </item>
 
