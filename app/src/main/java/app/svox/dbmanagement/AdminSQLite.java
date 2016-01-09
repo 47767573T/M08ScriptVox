@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,7 +25,7 @@ public class AdminSQLite extends SQLiteOpenHelper{
 
     //Script para crear la tabla de frases
     String sqlCreate = "CREATE TABLE "+NOMBRE_TABLA_FRASES+" ("
-            +"_ID "+INT_TYPE+" PRIMARY KEY AUTOINCREMENT,"
+            +"ID "+INT_TYPE+" PRIMARY KEY AUTOINCREMENT,"
             +" FECHA "+STRING_TYPE+" ,"
             +" CONTENIDO "+STRING_TYPE+")";
 
@@ -40,7 +41,7 @@ public class AdminSQLite extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+NOMBRE_TABLA_FRASES);
+        db.execSQL("DROP TABLE IF EXISTS " + NOMBRE_TABLA_FRASES);
         db.execSQL(sqlCreate);
     }
 
@@ -48,7 +49,11 @@ public class AdminSQLite extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("FECHA", getFechaActual());
+        String fecha = getFechaActual();
+        Log.d("fecha antes de save",fecha);
+        values.put("FECHA", fecha);
+        Log.d("fecha post_value",(String) values.get("FECHA"));
+
         values.put("CONTENIDO", contenido);
 
         db.insert(NOMBRE_TABLA_FRASES, null, values);
@@ -70,13 +75,25 @@ public class AdminSQLite extends SQLiteOpenHelper{
     public void modifyFrase(int id, String fraseNueva){
         SQLiteDatabase db = getWritableDatabase();
 
-        db.execSQL("UPDATE "+NOMBRE_TABLA_FRASES+" SET contenido='"+fraseNueva+"' WHERE ID="+ id);
+        db.execSQL("UPDATE " + NOMBRE_TABLA_FRASES + " SET contenido='" + fraseNueva + "' WHERE _ID =" + id);
+    }
+
+    public void deleteFrase(String fechaSeleccionada){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.execSQL("DELETE FROM " + NOMBRE_TABLA_FRASES + " WHERE FECHA = " + fechaSeleccionada);
+        Log.d("script borrar", fechaSeleccionada);
+
     }
 
     public static String getFechaActual(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM d HH:mm:ss yyyy");
         String ahora = sdf.format(new Date());
-
+        Log.d("fecha guardada", ahora);
         return ahora;
     }
+
+
+
 }

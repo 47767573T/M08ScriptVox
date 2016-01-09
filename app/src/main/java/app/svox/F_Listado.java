@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -49,6 +50,7 @@ public class F_Listado extends Fragment {
         AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext());
         Vector<String> vector = admin.getFrases();
 
+        Log.d("fecha arrayAdapter:",vector.lastElement().toString());
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity().getApplicationContext(),
                 R.layout.item_list_lay,vector);
@@ -86,7 +88,7 @@ public class F_Listado extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater mInflater = getActivity().getMenuInflater();
-        mInflater.inflate(R.menu.menu_context_list,menu);
+        mInflater.inflate(R.menu.menu_context_list, menu);
     }
 
     @Override
@@ -97,18 +99,32 @@ public class F_Listado extends Fragment {
         switch (item.getItemId()){
             case R.id.edit:
 
-
-                admin.modifyFrase(menuContextInfo.position, nuevaFrase);
+                /*admin.modifyFrase(menuContextInfo.position, nuevaFrase);
                 Vector<String> vector = admin.getFrases();
 
                 ArrayAdapter<String> newAdapter = new ArrayAdapter<>(
                         getActivity().getApplicationContext(),
                         R.layout.item_list_lay,vector);
 
-                lvFrases.setAdapter(newAdapter);
+                lvFrases.setAdapter(newAdapter);*/
 
                 return true;
             case R.id.delete:
+                //Extraemos la fecha del renglon del listview seleccionado
+                int idPos = menuContextInfo.position;
+                String str = lvFrases.getItemAtPosition(idPos).toString();
+                //String fechaSeleccionada = textoDeLinea.substring(0,19);
+
+                Log.d("XXX", "("+str+")");
+
+                //Borramos la frase segun la fecha y reordenamos el list
+                //admin.deleteFrase(fechaSeleccionada);
+                Vector<String> vector = admin.getFrases();
+                ArrayAdapter<String> newAdapter = new ArrayAdapter<>(
+                        getActivity().getApplicationContext(),
+                        R.layout.item_list_lay,vector);
+                lvFrases.setAdapter(newAdapter);
+
                 return true;
             default:
                 return super.onContextItemSelected(item);
