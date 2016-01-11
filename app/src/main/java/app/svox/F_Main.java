@@ -105,24 +105,6 @@ public class F_Main extends Fragment implements View.OnClickListener, View.OnLon
             }
         });*/
 
-        tvUltimaFrase.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String frase = (String) tvUltimaFrase.getText();
-                SesionActualfrases.add(frase);
-                admin = new AdminSQLite(getContext(), 2);
-                admin.addFrase(frase);
-
-                Toast.makeText(getContext(), "Frase guardada",
-                        Toast.LENGTH_SHORT).show();
-
-                tvUltimaFrase.setText("");
-                tvSugerenciaFrase.setText("");
-
-                return false;
-            }
-        });
-
         tvSugerenciaFrase.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -133,9 +115,6 @@ public class F_Main extends Fragment implements View.OnClickListener, View.OnLon
 
                 Toast.makeText(getContext(), "Frase sugerida guardada",
                         Toast.LENGTH_SHORT).show();
-
-                /*Intent listadoFrases = new Intent(getContext(), A_List.class);
-                startActivity(listadoFrases);*/
 
                 tvUltimaFrase.setText("");
                 tvSugerenciaFrase.setText("");
@@ -155,16 +134,6 @@ public class F_Main extends Fragment implements View.OnClickListener, View.OnLon
             }
         });
 
-        //PARA GEOCALIZACION
-        btMap = (ImageButton) rootView.findViewById(R.id.btnMap);
-
-        btLista.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent Mapa = new Intent(getContext(), XXXX.class);
-                //startActivity(Mapa);
-            }
-        });
         return rootView;
     }
 

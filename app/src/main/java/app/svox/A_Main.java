@@ -13,7 +13,6 @@ public class A_Main extends AppCompatActivity {
         setContentView(R.layout.a_main_lay);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
