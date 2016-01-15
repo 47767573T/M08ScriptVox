@@ -52,7 +52,7 @@
         android:layout_above="@+id/btnLista"
         android:id="@+id/frameLayout">
 
-        <TextView
+        <!--<TextView
             android:id="@+id/txvUltimaFrase"
             android:text="Frase Reconocida"
             android:layout_width="match_parent"
@@ -72,12 +72,30 @@
             android:layout_height="91dp"
             android:text="Sugerencia"
             android:layout_gravity="left|bottom"
-            android:textColor="#8b42414a" />
+            android:textColor="#8b42414a" />-->
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:id="@+id/etxFraseCaptada"
+            android:layout_gravity="left|top"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/btnHabla"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/etxFraseSugerida"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:id="@+id/etxFraseSugerida"
+            android:layout_gravity="center_horizontal|bottom"
+            android:textColor="#8b42414a"/>
+
     </FrameLayout>
 
     <ToggleButton
-        android:textOff="Rec"
-        android:textOn="Rec"
+        android:textOff="Off"
+        android:textOn="On"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Grabar"

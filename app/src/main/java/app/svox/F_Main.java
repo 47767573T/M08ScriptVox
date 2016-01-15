@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -54,6 +55,8 @@ public class F_Main extends Fragment implements View.OnClickListener, View.OnLon
 
     private TextView tvUltimaFrase;
     private TextView tvSugerenciaFrase;
+    private EditText etFraseCaptada;
+    private EditText etFraseSugerida;
 
     //Elementos pasivos auxiliares
     private ArrayList <String> SesionActualfrases = new ArrayList<>();
@@ -72,43 +75,26 @@ public class F_Main extends Fragment implements View.OnClickListener, View.OnLon
         btHabla = (ImageButton) rootView.findViewById(R.id.btnHabla);
         btHabla.setOnClickListener(this);
         btHabla.setOnLongClickListener(this);
-        tvUltimaFrase = (TextView) rootView.findViewById(R.id.txvUltimaFrase);
-        tvUltimaFrase.setOnClickListener(this);
-        tvUltimaFrase.setOnLongClickListener(this);
-        tvSugerenciaFrase = (TextView) rootView.findViewById(R.id.txvFraseSugerencia);
-        tvSugerenciaFrase.setOnClickListener(this);
-        tvSugerenciaFrase.setOnLongClickListener(this);
+        etFraseCaptada = (EditText) rootView.findViewById(R.id.etxFraseCaptada);
+        etFraseCaptada.setOnClickListener(this);
+        etFraseCaptada.setOnLongClickListener(this);
+        etFraseSugerida = (EditText) rootView.findViewById(R.id.etxFraseSugerida);
+        etFraseSugerida.setOnClickListener(this);
+        etFraseSugerida.setOnLongClickListener(this);
+
+
+        //tvUltimaFrase = (TextView) rootView.findViewById(R.id.txvUltimaFrase);
+        //tvUltimaFrase.setOnClickListener(this);
+        //tvUltimaFrase.setOnLongClickListener(this);
+        //tvSugerenciaFrase = (TextView) rootView.findViewById(R.id.txvFraseSugerencia);
+        //tvSugerenciaFrase.setOnClickListener(this);
+        //tvSugerenciaFrase.setOnLongClickListener(this);
         tbGrabar = (ToggleButton) rootView.findViewById(R.id.tobGrabar);
 
-
-        /*btHabla.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-
-                //otra  variante de modelo a testear y mensajes
-                //intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
-
-                try {
-                    //Aqui realiza la actividad de reconocimiento y recoge los datos
-                    startActivityForResult(intent, CODIGO_SOLICITUD_RECONOCIMIENTO);
-                    tvUltimaFrase.setText("");
-                    tvSugerenciaFrase.setText("");
-
-                } catch (ActivityNotFoundException a) {
-                    Toast t = Toast.makeText(getActivity().getApplicationContext(),
-                            "error en el reconocimiento de voz de su aparato",
-                            Toast.LENGTH_SHORT);
-                    t.show();
-                }
-            }
-        });*/
-
-        tvSugerenciaFrase.setOnLongClickListener(new View.OnLongClickListener() {
+        /*tvSugerenciaFrase.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                String frase = (String) tvSugerenciaFrase.getText();
+                String frase = (String) etFraseSugerida.getText();
                 SesionActualfrases.add(frase);
                 admin = new AdminSQLite(getContext(), 2);
                 admin.addFrase(frase);
@@ -121,7 +107,7 @@ public class F_Main extends Fragment implements View.OnClickListener, View.OnLon
 
                 return false;
             }
-        });
+        });*/
 
         //PARA LISTADO:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         btLista = (ImageButton) rootView.findViewById(R.id.btnLista);
@@ -147,8 +133,8 @@ public class F_Main extends Fragment implements View.OnClickListener, View.OnLon
                 if (resultCode == A_Main.RESULT_OK && null != intent) {
 
                     ArrayList<String> afrases = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    tvUltimaFrase.setText(afrases.get(0));   //Aqui escribe el resultado en el textView indicado
-                    tvSugerenciaFrase.setText(afrases.get(1));
+                    etFraseCaptada.setText(afrases.get(0));   //Aqui escribe el resultado en el textView indicado
+                    etFraseSugerida.setText(afrases.get(8));
                 }
                 break;
             }
@@ -158,24 +144,26 @@ public class F_Main extends Fragment implements View.OnClickListener, View.OnLon
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnHabla:         //BOTON DE LLAMADA AL METODO DE RECONOCIMIENTO
+            //BOTON DE LLAMADA AL METODO DE RECONOCIMIENTO DE VOZ
+            case R.id.btnHabla:
                 Intent intHabla = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intHabla.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 
                 try {
                     startActivityForResult(intHabla, CODIGO_SOLICITUD_RECONOCIMIENTO);
-                    tvUltimaFrase.setText("");
-                    tvSugerenciaFrase.setText("");
+                    etFraseCaptada.setText("");
+                    etFraseSugerida.setText("");
 
                 } catch (ActivityNotFoundException a) {
-                    toastMsg (2,"F_Main, metodo Onclick");
+                    toastMsg (2,"reconocimiento de voz");
                 }
                 break;
 
-            case R.id.txvUltimaFrase:
+            //EDITAR EL TEXTO
+            case R.id.etxFraseCaptada:
                 break;
 
-            case R.id.txvFraseSugerencia:
+            case R.id.etxFraseSugerida:
                 break;
 
             case R.id.btnLista:
@@ -191,26 +179,26 @@ public class F_Main extends Fragment implements View.OnClickListener, View.OnLon
         admin = new AdminSQLite(getContext(), 2);
 
         switch (v.getId()) {
-            //case R.id.btnHabla:
-                //break;
+            case R.id.btnHabla:
+                break;
 
-            case R.id.txvUltimaFrase:       //Guardar la frase del TextView
-                SesionActualfrases.add((String) tvUltimaFrase.getText());
-                admin.addFrase((String) tvUltimaFrase.getText());
+            case R.id.etxFraseCaptada:       //Guardar la frase del TextView
+                SesionActualfrases.add(etFraseCaptada.getText().toString());
+                admin.addFrase(etFraseCaptada.getText().toString());
 
                 toastMsg(1, "Frase");
-                tvUltimaFrase.setText("");
-                tvSugerenciaFrase.setText("");
+                etFraseCaptada.setText("");
+                etFraseSugerida.setText("");
 
                 break;
 
-            case R.id.txvFraseSugerencia:   //Guardar la frase sugerida del TextView
-                SesionActualfrases.add((String) tvSugerenciaFrase.getText());
-                admin.addFrase((String) tvSugerenciaFrase.getText());
+            case R.id.etxFraseSugerida:   //Guardar la frase sugerida del TextView
+                SesionActualfrases.add(etFraseSugerida.getText().toString());
+                admin.addFrase(etFraseSugerida.getText().toString());
 
                 toastMsg(1, "Frase Sugerida");
-                tvUltimaFrase.setText("");
-                tvSugerenciaFrase.setText("");
+                etFraseCaptada.setText("");
+                etFraseSugerida.setText("");
 
                 break;
 

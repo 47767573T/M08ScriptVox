@@ -6,6 +6,7 @@ import app.svox.dbmanagement.*;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.net.Uri;
@@ -31,15 +32,13 @@ import java.util.Vector;
 import java.util.zip.Inflater;
 
 
-public class F_Listado extends Fragment {
+public class F_Listado extends Fragment{
 
     ListView lvFrases;
     String nuevaFrase = "";
 
     //CONTRUCTOR
     public F_Listado() { }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +49,6 @@ public class F_Listado extends Fragment {
         AdminSQLite admin = new AdminSQLite(getActivity().getApplicationContext(), 2);
         Vector<String> vector = admin.getFrases();
 
-        Log.d("fecha arrayAdapter:",vector.lastElement().toString());
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity().getApplicationContext(),
                 R.layout.item_list_lay,vector);
@@ -70,17 +68,6 @@ public class F_Listado extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         });
-
-        lvFrases.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                return false;
-            }
-        });
-
-        registerForContextMenu(lvFrases);   //registramos el listView para usar el menu contextual
-
         return viewFrases;
     }
 
@@ -136,7 +123,5 @@ public class F_Listado extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
-
 
 }

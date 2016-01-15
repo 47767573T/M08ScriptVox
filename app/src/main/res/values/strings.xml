@@ -7,5 +7,6 @@
     <!--Menu contextual de listado de frases-->
     <string name="list_context_menu_edit">Editar</string>
     <string name="list_context_menu_delete">Borrar</string>
+    <string name="list_context_menu_tagged">Taggear</string>
 
 </resources>
